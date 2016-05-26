@@ -128,31 +128,59 @@ def populateTableFromCSV(csvFile, tableName, fieldNames, fieldTypes,
 
 #########################################################################
 
-tableName  = u'prices'
+def createPricesTable(clobber=False):
+    """
+    Create table for prices in Database.
 
-fieldNames = ['Ticker TEXT',
-              'Date INTEGER',
-              'Open FLOAT', 
-              'High FLOAT', 
-              'Low FLOAT', 
-              'Close FLOAT',
-              'Volume INTEGER']
+    :param clobber: Set to true to over write table.
 
-primaryKeys = "(Ticker, Date)"
+    """
+    tableName  = u'prices'
 
-createTable(tableName, fieldNames, primaryKeys, clobber=True) #  clobber=True
+    fieldNames = ['Ticker TEXT',
+                  'Date INTEGER',
+                  'Open FLOAT',
+                  'High FLOAT',
+                  'Low FLOAT',
+                  'Close FLOAT',
+                  'Volume INTEGER']
+
+    primaryKeys = "(Ticker, Date)"
+
+    createTable(tableName, fieldNames, primaryKeys, clobber=clobber)
 
 #########################################################################
 
-tableName  = 'companies'
+def createCompaniesTable(clobber=False):
+    tableName  = 'companies'
 
-csvFile    = dataDir + '/ftse-companies-2016-05.csv'
+    csvFile    = dataDir + '/ftse-companies-2016-05.csv'
 
-fieldNames = ['companyName TEXT', 
-              'ticker TEXT PRIMARY KEY',
-              'sector TEXT',
-              'marketCap FLOAT',
-              'employees INT']
-fieldTypes = 'S10,S60,S30,float,int'
+    fieldNames = ['companyName TEXT',
+                  'ticker TEXT PRIMARY KEY',
+                  'sector TEXT',
+                  'marketCap FLOAT',
+                  'employees INT']
+    fieldTypes = 'S10,S60,S30,float,int'
 
-populateTableFromCSV(csvFile, tableName, fieldNames, fieldTypes,  clobber=True)
+    populateTableFromCSV(csvFile, tableName, fieldNames, fieldTypes,  clobber=clobber)
+
+
+if __name__ == '__main__':
+
+    print 'Which option:'
+    print 'Clobber? [y/n] '
+
+    choice = False
+
+    s = raw_input()
+
+    if str.lower(s) == 'y':
+        choice = True
+
+
+    createPricesTable(clobber=choice)
+
+    createCompaniesTable(clobber=choice)
+
+
