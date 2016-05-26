@@ -216,4 +216,26 @@ def update():
 
 
 
+if __name__ == '__main__':
+
+    print 'Which option:'
+    print ' 1. Initial set up'
+    print ' 2. Update'
+    print ' Any other key, exit.'
+
+    choice = raw_input()
+
+    if choice == '1':
+        print 'Runnining initial set up ...'
+        initial_set_up(con)
+    elif choice == '2':
+        print 'Updating prices ...'
+        update()
+    else:
+        print 'Passing without running'
+
+
+
+
+
 
