@@ -21,7 +21,7 @@ from tr_utils import *
 sqlite3.register_adapter(np.int64, int)
 
 
-dataDir = '/Users/paulaljabar/Documents/tr/data'
+dataDir = 'data'
 dbFile = 'trade_data'
 dbFileFull = dataDir + '/' + dbFile + '.db'
 

@@ -17,7 +17,8 @@ import os.path, shutil
 sqlite3.register_adapter(np.int64, int)
 
 # The name of the file containing the sqlite database.
-dataDir = '/Users/paulaljabar/Documents/tr/data'
+dataDir = 'data'
+
 dbFile = 'trade_data'
 dbFileFull = dataDir + '/' + dbFile + '.db'
 
