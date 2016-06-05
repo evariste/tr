@@ -193,17 +193,24 @@ def getPricesForGroup(dbCon, tickers, start_date_str, end_date_str):
     Function will find the common days on which prices are available
     for all stocks and return these along with the prices.
 
+    Exclude stocks that have prices for fewer than 90% of days on which it is possible to have a price.
+
+    Returns None if no data found.
+
     :param dbCon:     Database connection
     :param tickers:   The stocks to look up
     :param start_date_str: Start date, inclusive
     :param end_date_str:   End date, exclusive, current date if not specified.
 
-    :return: An array of days of length nD, where nD is the nubmer of days, and a
-    list of arrays, each containing the nD prices for each stock.
+    :return:
+    An array of days of length nD, where nD is the nubmer of days on which all stocks have price data.
+    A nC x nD array, where nC is the number of companies, each row containing the nD prices for a stock.
+    A list of the stocks that have data for the interval.
     """
 
     daysAll = []
     pricesAll = []
+    tickersAll = []
 
     maxDayCount = 0
 
@@ -212,10 +219,17 @@ def getPricesForGroup(dbCon, tickers, start_date_str, end_date_str):
         if data == None:
             continue
         days, prices = data
+
         daysAll.append(days)
         pricesAll.append(prices)
+        tickersAll.append(ticker)
+
         if len(days) > maxDayCount:
             maxDayCount = len(days)
+
+    if len(daysAll) == 0:
+        # Have not found any data
+        return None
 
     excludeInds = []
     for n, days in enumerate(daysAll):
@@ -225,6 +239,8 @@ def getPricesForGroup(dbCon, tickers, start_date_str, end_date_str):
     for n in excludeInds:
         daysAll = daysAll[:n] + daysAll[(n+1):]
         pricesAll = pricesAll[:n] + pricesAll[(n+1):]
+        tickersAll = tickersAll[:n] + tickersAll[(n+1):]
+
 
     daysCommon = set(daysAll[0])
     for days in daysAll:
@@ -237,4 +253,4 @@ def getPricesForGroup(dbCon, tickers, start_date_str, end_date_str):
         pricesAll[n] = pricesAll[n][ix]
 
 
-    return daysCommon, pricesAll
+    return daysCommon, np.array(pricesAll), tickersAll
