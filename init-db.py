@@ -108,7 +108,7 @@ def populateTableFromCSV(csvFile, tableName, fieldNames, fieldTypes,
         cmd = "CREATE TABLE " + tableName + "(" + ', '.join(fieldNames) + ")"
     
         if verbose:
-            print "setupDB.populateTableFromCSV: ", cmd
+            print "populateTableFromCSV: ", cmd
         cur.execute(cmd)
     
         cmd = ("INSERT INTO " + tableName + 
@@ -117,7 +117,7 @@ def populateTableFromCSV(csvFile, tableName, fieldNames, fieldTypes,
                ") ")
     
         if verbose:
-            print "setupDB.populateTableFromCSV: ", cmd
+            print "populateTableFromCSV: ", cmd
         cur.executemany(cmd, dataToEnter)
         con.commit()
 
